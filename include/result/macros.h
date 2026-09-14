@@ -31,3 +31,12 @@ namespace result::detail {
 #define TRY_2(expr, ctx) TRY_IMPL(expr, ctx)
 #define TRY_PICK(_1, _2, NAME, ...) NAME
 #define TRY(...) TRY_PICK(__VA_ARGS__, TRY_2, TRY_1)(__VA_ARGS__)
+
+// Simpler version of above for void functions like flecs query. Just returns on fail
+#define TRY_IGNORE(expr)                                               \
+    __extension__ ({                                                   \
+        auto&& _r = (expr);                                            \
+        if (!_r) [[unlikely]] {                                        \
+            return;                                                    \
+        ::result::detail::try_unwrap_(_r);                             \
+    })
