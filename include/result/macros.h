@@ -36,7 +36,7 @@ namespace result::detail {
 #define TRY_IGNORE(expr)                                               \
     __extension__ ({                                                   \
         auto&& _r = (expr);                                            \
-        if (!_r) [[unlikely]] {                                        \
+        if (!_r) [[unlikely]]                                          \
             return;                                                    \
         ::result::detail::try_unwrap_(_r);                             \
     })
